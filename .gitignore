@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+
+# Geodata (Obrigatório ignorar por causa do tamanho)
+shp/
+
+# Results (Manter estrutura mas ignorar arquivos gerados)
+results/*.csv
+results/*.json
+results/figures/*.png
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db

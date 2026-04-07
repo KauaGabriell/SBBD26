@@ -1,0 +1,20 @@
+services:
+  geobench_db:
+    image: postgis/postgis:16-3.4
+    container_name: geobench_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: geobench
+      POSTGRES_PASSWORD: geobench123
+      POSTGRES_DB: geobench_db
+    volumes:
+      - geobench_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geobench -d geobench_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  geobench_pgdata:
