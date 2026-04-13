@@ -9,7 +9,7 @@ O objetivo é validar o **Princípio da Localidade de Dados**: processar informa
 ## 📊 Destaques do Projeto
 - **Universal:** Funciona com qualquer Estado, País ou Recorte Geográfico.
 - **Escalável:** Detecta automaticamente múltiplos anos de análise.
-- **Visualização Premium:** Dashboards automáticos com tema Dark (estilo GitHub).
+- **Visualização:** Dashboards estáticos.
 - **Relatório Técnico:** Análise detalhada dos resultados e speedup.
 
 ---
