@@ -22,3 +22,7 @@ results/figures/*.png
 # OS
 .DS_Store
 Thumbs.db
+
+
+# Geral
+docs

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GeoBench SBBD 2026 — Benchmark de processamento geoespacial com dados reais de Goiás">
+  <title>GeoBench · SBBD 2026 · Goiás 2016–2018</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     BARRA SUPERIOR EDITORIAL
+══════════════════════════════════════ -->
+<div class="topo">
+  <div class="topo-tag">GeoBench #1</div>
+  <div class="topo-sep"></div>
+  <span class="topo-item">Banco de Dados Geoespacial</span>
+  <div class="topo-sep"></div>
+  <span class="topo-item">Goiás · Brasil</span>
+  <div class="topo-sep"></div>
+  <span class="topo-item">2016 – 2018</span>
+  <span class="topo-pill">SBBD 2026</span>
+  <div class="topo-right">
+    <span class="topo-data">Dados reais · IBGE LULC</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero entrar">
+  <div class="hero-esquerda">
+    <div>
+      <div class="hero-sobreline">
+        <div class="hero-sobreline-bar"></div>
+        <span class="hero-sobreline-txt">Pesquisa em Performance Geoespacial</span>
+      </div>
+      <h1 class="hero-titulo">
+        GeoBench —<br>
+        <em>Benchmark</em><br>
+        Espacial<br>
+        Goiás
+      </h1>
+      <p class="hero-desc">
+        Comparação de desempenho entre <strong>In-Database (PostGIS)</strong>
+        e <strong>Middleware (Python / GeoPandas)</strong> no processamento
+        de ~680 mil polígonos fitofisionômicos do estado de Goiás,
+        período 2016–2018.
+      </p>
+    </div>
+    <div class="hero-destaque">
+      <div class="hero-destaque-num">11,89×</div>
+      <div class="hero-destaque-txt">
+        <strong>mais rápido com PostGIS</strong>
+        vs GeoPandas · 680k polígonos
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-direita">
+    <div class="hero-dir-label">Resultados do Experimento</div>
+    <div class="hero-stats-grid">
+      <div class="hs">
+        <div class="hs-num">5,23<span class="hs-unit">s</span></div>
+        <div class="hs-lbl">tempo médio<br>PostGIS SQL</div>
+      </div>
+      <div class="hs">
+        <div class="hs-num">62,28<span class="hs-unit">s</span></div>
+        <div class="hs-lbl">tempo médio<br>GeoPandas Python</div>
+      </div>
+      <div class="hs">
+        <div class="hs-num">680k</div>
+        <div class="hs-lbl">polígonos<br>processados</div>
+      </div>
+      <div class="hs">
+        <div class="hs-num">11,89<span class="hs-unit">×</span></div>
+        <div class="hs-lbl">fator de<br>speedup</div>
+      </div>
+    </div>
+    <div class="hero-dir-rodape">
+      <span class="hr-badge">PostgreSQL 16</span>
+      <span class="hr-badge">PostGIS 3.4</span>
+      <span class="hr-badge">Python 3.11</span>
+      <span class="hr-badge">GeoPandas 0.14</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CORPO: LATERAL + CONTEÚDO
+══════════════════════════════════════ -->
+<div class="corpo entrar d1">
+
+  <!-- SIDEBAR -->
+  <aside class="lateral">
+    <div>
+      <div class="lat-secao-lbl">Seções</div>
+      <nav class="lat-nav">
+        <button class="lat-nav-item ativo" onclick="ir('sec-kpi',this)"><span class="lat-num">01</span> Indicadores Principais</button>
+        <button class="lat-nav-item" onclick="ir('sec-graficos',this)"><span class="lat-num">02</span> Comparação de Desempenho</button>
+        <button class="lat-nav-item" onclick="ir('sec-mapa',this)"><span class="lat-num">03</span> Área de Estudo: Goiás</button>
+        <button class="lat-nav-item" onclick="ir('sec-relatorio',this)"><span class="lat-num">04</span> Relatório Técnico</button>
+        <button class="lat-nav-item" onclick="ir('sec-analise',this)"><span class="lat-num">05</span> Análise Detalhada</button>
+        <button class="lat-nav-item" onclick="ir('sec-artigo',this)"><span class="lat-num">06</span> Trecho para Artigo</button>
+      </nav>
+    </div>
+
+    <div>
+      <div class="lat-secao-lbl">Métricas Reais</div>
+      <div class="lat-resumo">
+        <div class="lat-card">
+          <div class="lat-card-lbl">Speedup</div>
+          <div class="lat-card-val">11,89×</div>
+          <div class="lat-card-sub">SQL vs Python</div>
+        </div>
+        <div class="lat-card">
+          <div class="lat-card-lbl">SQL (média)</div>
+          <div class="lat-card-val">5,23s</div>
+          <div class="lat-card-sub">5.236,86 ms</div>
+        </div>
+        <div class="lat-card">
+          <div class="lat-card-lbl">Python (média)</div>
+          <div class="lat-card-val">62,28s</div>
+          <div class="lat-card-sub">62.288,20 ms</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="lat-secao-lbl">Configuração</div>
+      <p style="font-family:var(--mono);font-size:10px;color:var(--ink-4);line-height:1.75;">
+        Goiás · Brasil<br>
+        2016–2018 · IBGE LULC<br>
+        ~340.253 polígonos/ano<br>
+        Índice GIST (R-Tree)<br>
+        ST_Intersection + ST_Area
+      </p>
+    </div>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="conteudo">
+
+    <!-- §01 — KPIs -->
+    <div id="sec-kpi">
+      <div class="sec-cab">
+        <span class="sec-num">01</span>
+        <span class="sec-titulo">Indicadores-Chave de Desempenho</span>
+        <div class="sec-linha"></div>
+        <span class="sec-tag">Dados reais · Goiás 2016–2018</span>
+      </div>
+      <div class="pad">
+        <div class="kpi-grade">
+          <div class="kpi-card kc-verde">
+            <span class="kpi-badge">PostGIS SQL</span>
+            <div class="kpi-num">5,23s</div>
+            <div class="kpi-lbl">Tempo Médio SQL</div>
+            <div class="kpi-sub">5.236,86 ms<br>ST_Intersection + ST_Area</div>
+          </div>
+          <div class="kpi-card kc-rosa">
+            <span class="kpi-badge">GeoPandas Python</span>
+            <div class="kpi-num">62,28s</div>
+            <div class="kpi-lbl">Tempo Médio Python</div>
+            <div class="kpi-sub">62.288,20 ms<br>geopandas.overlay()</div>
+          </div>
+          <div class="kpi-card kc-speed">
+            <span class="kpi-badge">Speedup</span>
+            <div class="kpi-num">11,89×</div>
+            <div class="kpi-lbl">Fator de Aceleração</div>
+            <div class="kpi-sub">SQL / Python<br>PostGIS significativamente superior</div>
+          </div>
+          <div class="kpi-card kc-vol">
+            <span class="kpi-badge">Volume de Dados</span>
+            <div class="kpi-num">~680k</div>
+            <div class="kpi-lbl">Polígonos Processados</div>
+            <div class="kpi-sub">340.253 por ano<br>Goiás · 2016 e 2018</div>
+          </div>
+          <div class="kpi-card kc-op">
+            <span class="kpi-badge">Operação</span>
+            <div class="kpi-num">Interseção Espacial</div>
+            <div class="kpi-lbl">Tipo de Processamento</div>
+            <div class="kpi-sub">ST_Intersection + ST_Area<br>Fitofisionomias LULC</div>
+          </div>
+          <div class="kpi-card kc-conc">
+            <span class="kpi-badge">Conclusão</span>
+            <div class="kpi-num">SQL Significativamente Superior</div>
+            <div class="kpi-lbl">Veredicto do Benchmark</div>
+            <div class="kpi-sub">Princípio da localidade<br>de dados validado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- §02 — Gráficos -->
+    <div id="sec-graficos">
+      <div class="sec-cab" style="margin-top:8px">
+        <span class="sec-num">02</span>
+        <span class="sec-titulo">Comparação de Desempenho</span>
+        <div class="sec-linha"></div>
+        <span class="sec-tag">Tempo de execução real</span>
+      </div>
+      <div class="pad">
+
+        <!-- Bloco de comparação direta -->
+        <div class="bloco-comparacao">
+          <div class="painel-cab">
+            <div class="painel-titulo"><div class="p-ponto pp-verde"></div>Comparação Direta de Tempo</div>
+            <span class="painel-tag">PostGIS SQL vs GeoPandas Python</span>
+          </div>
+          <div class="comparacao-grade">
+            <div class="comp-lado">
+              <div class="comp-metodo cm-sql">▶ PostGIS (In-Database)</div>
+              <div class="comp-tempo">5,23<span class="comp-unidade">s</span></div>
+              <div class="comp-ms">5.236,86 ms · tempo médio</div>
+              <div class="comp-barra-bg">
+                <div class="comp-barra-fill cbf-sql" style="width:8.4%"></div>
+              </div>
+              <div class="comp-pct">8,4% do tempo do Python</div>
+            </div>
+            <div class="comp-lado">
+              <div class="comp-metodo cm-py">▶ GeoPandas (Middleware)</div>
+              <div class="comp-tempo">62,28<span class="comp-unidade">s</span></div>
+              <div class="comp-ms">62.288,20 ms · tempo médio</div>
+              <div class="comp-barra-bg">
+                <div class="comp-barra-fill cbf-py" style="width:100%"></div>
+              </div>
+              <div class="comp-pct">100% (referência)</div>
+            </div>
+          </div>
+          <div class="comp-speedup-centro">
+            <div class="csc-num">11,89×</div>
+            <div class="csc-txt">
+              <strong>PostGIS é 11,89× mais rápido</strong><br>
+              processando ~680 mil polígonos de Goiás
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráficos Chart.js -->
+        <div class="dois-col">
+          <div class="painel">
+            <div class="painel-cab">
+              <div class="painel-titulo"><div class="p-ponto pp-verde"></div>Tempo de Execução (segundos)</div>
+              <span class="painel-tag">SQL vs Python</span>
+            </div>
+            <div class="painel-corpo">
+              <div class="legenda">
+                <span class="leg"><span class="leg-q" style="background:var(--g700)"></span>PostGIS SQL</span>
+                <span class="leg"><span class="leg-q" style="background:#e07030"></span>GeoPandas Python</span>
+              </div>
+              <div class="caixa-grafico">
+                <canvas id="graf-tempo" role="img" aria-label="Gráfico de barras: tempo de execução SQL 5,23s vs Python 62,28s">
+                  Tempo SQL: 5,23s. Tempo Python: 62,28s.
+                </canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="painel">
+            <div class="painel-cab">
+              <div class="painel-titulo"><div class="p-ponto pp-roxo"></div>Fator de Speedup</div>
+              <span class="painel-tag">Python ÷ SQL</span>
+            </div>
+            <div class="painel-corpo">
+              <div style="display:flex;flex-direction:column;gap:16px;padding-top:8px">
+
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                    <span style="font-size:12px;color:var(--ink-3)">PostGIS SQL</span>
+                    <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g700)">5,23s</span>
+                  </div>
+                  <div class="barra-progresso"><div class="bp-fill" style="width:8.4%;background:var(--g700)"></div></div>
+                </div>
+
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                    <span style="font-size:12px;color:var(--ink-3)">GeoPandas Python</span>
+                    <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:#c0580a">62,28s</span>
+                  </div>
+                  <div class="barra-progresso"><div class="bp-fill" style="width:100%;background:#e07030"></div></div>
+                </div>
+
+                <div style="background:var(--g50);border-radius:var(--r);padding:18px 16px;margin-top:8px;text-align:center">
+                  <div style="font-family:var(--serif);font-size:48px;font-weight:900;color:var(--g700);line-height:1">11,89×</div>
+                  <div style="font-size:12px;color:var(--ink-3);margin-top:4px">fator de aceleração SQL</div>
+                </div>
+
+                <div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);line-height:1.65;padding:10px 12px;background:var(--bg);border-radius:var(--r)">
+                  Redução de 91,6% no tempo de<br>
+                  processamento ao usar PostGIS<br>
+                  vs transferência de dados para Python.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de barras em ms -->
+        <div class="painel" style="margin-top:0">
+          <div class="painel-cab">
+            <div class="painel-titulo"><div class="p-ponto pp-verde"></div>Tempo em Milissegundos</div>
+            <span class="painel-tag">Precisão de medição</span>
+          </div>
+          <div class="painel-corpo">
+            <div class="legenda">
+              <span class="leg"><span class="leg-q" style="background:var(--g700)"></span>PostGIS — 5.236,86 ms</span>
+              <span class="leg"><span class="leg-q" style="background:#e07030"></span>Python — 62.288,20 ms</span>
+            </div>
+            <div class="caixa-grafico">
+              <canvas id="graf-ms" role="img" aria-label="Gráfico em milissegundos: SQL 5236ms vs Python 62288ms">
+                SQL: 5.236,86 ms. Python: 62.288,20 ms.
+              </canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §03 — Mapa Goiás -->
+    <div id="sec-mapa">
+      <div class="sec-cab">
+        <span class="sec-num">03</span>
+        <span class="sec-titulo">Área de Estudo: Goiás</span>
+        <div class="sec-linha"></div>
+        <span class="sec-tag">Benchmark com dados reais</span>
+      </div>
+      <div class="pad-b" style="padding-top:28px">
+        <div class="mapa-wrapper">
+          <div class="mapa-inner">
+
+            <div class="mapa-nav">
+              <div class="mapa-nav-item ativo">Brasil</div>
+              <div class="mapa-nav-sep"></div>
+              <div class="mapa-nav-item">Goiás</div>
+              <div class="mapa-nav-sep"></div>
+              <div class="mapa-nav-item">Cerrado</div>
+              <div class="mapa-nav-sep"></div>
+              <div class="mapa-nav-item">Fitofisionomias</div>
+            </div>
+
+            <div class="mapa-area">
+              <div class="mapa-titulo">GOIÁS</div>
+              <div class="mapa-subtitulo">Centro-Oeste do Brasil · Bioma Cerrado · 340.086 km²</div>
+              <div class="mapa-svg-wrap">
+                <svg viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <radialGradient id="bglow" cx="50%" cy="45%" r="55%">
+                      <stop offset="0%" stop-color="#3db36a" stop-opacity=".3"/>
+                      <stop offset="100%" stop-color="#1a5632" stop-opacity="0"/>
+                    </radialGradient>
+                    <filter id="brilho">
+                      <feGaussianBlur stdDeviation="2" result="blur"/>
+                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                  </defs>
+
+                  <ellipse cx="200" cy="220" rx="170" ry="180" fill="rgba(255,255,255,0.04)"/>
+
+                  <path d="M 80,60 L 135,42 L 200,38 L 260,44 L 320,58 L 355,82 L 368,115 L 360,148 L 345,168 L 325,160 L 305,175 L 285,165 L 268,180 L 250,170 L 232,180 L 212,168 L 192,178 L 172,165 L 150,170 L 130,162 L 108,166 L 88,148 L 74,120 L 76,88 Z"
+                        fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+                  <path d="M 142,178 L 168,170 L 192,182 L 218,172 L 242,182 L 265,170 L 282,180 L 295,200 L 302,226 L 296,256 L 278,280 L 258,296 L 236,305 L 212,308 L 188,302 L 166,288 L 148,268 L 138,244 L 132,218 L 136,196 Z"
+                        fill="url(#bglow)" stroke="#6dcf90" stroke-width="2"
+                        filter="url(#brilho)" style="cursor:pointer"/>
+
+                  <path d="M 148,192 L 170,184 L 194,194 L 216,186 L 238,194 L 256,184 L 272,194 L 282,214 L 286,238 L 280,260 L 264,278 L 244,290 L 220,296 L 196,292 L 174,278 L 158,260 L 148,238 L 144,214 Z"
+                        fill="rgba(109,207,144,0.25)" stroke="#a8e6bc" stroke-width="1.5"/>
+
+                  <circle cx="196" cy="230" r="4" fill="#a8e6bc" opacity=".9"/>
+                  <circle cx="196" cy="230" r="4" fill="#a8e6bc" opacity=".3">
+                    <animate attributeName="r" values="4;14;4" dur="3s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" values=".3;0;.3" dur="3s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="225" cy="210" r="3" fill="#6dcf90" opacity=".7"/>
+                  <circle cx="170" cy="255" r="3" fill="#6dcf90" opacity=".7"/>
+                  <circle cx="250" cy="248" r="3" fill="#6dcf90" opacity=".6"/>
+                  <circle cx="200" cy="278" r="2.5" fill="#6dcf90" opacity=".5"/>
+
+                  <text x="200" y="238" font-family="'JetBrains Mono'" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle" font-weight="700">GOIÁS</text>
+                  <text x="200" y="252" font-family="'JetBrains Mono'" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle">~680k polígonos</text>
+
+                  <text x="130" y="130" font-family="'JetBrains Mono'" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle">MT</text>
+                  <text x="295" y="140" font-family="'JetBrains Mono'" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle">BA</text>
+                  <text x="185" y="148" font-family="'JetBrains Mono'" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle">TO</text>
+                  <text x="283" y="318" font-family="'JetBrains Mono'" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle">MG</text>
+
+                  <line x1="0" y1="220" x2="400" y2="220" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                  <line x1="200" y1="0" x2="200" y2="440" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                  <text x="4" y="224" font-family="'JetBrains Mono'" font-size="7" fill="rgba(255,255,255,0.2)">16°S</text>
+                  <text x="196" y="432" font-family="'JetBrains Mono'" font-size="7" fill="rgba(255,255,255,0.2)">48°W</text>
+                </svg>
+              </div>
+              <div class="mapa-legenda">
+                <span>Baixa densidade</span>
+                <div class="mapa-grad"></div>
+                <span>Alta densidade de polígonos</span>
+              </div>
+            </div>
+
+            <div class="mapa-stats">
+              <div>
+                <div class="mapa-stat">
+                  <div class="mapa-stat-num">340k</div>
+                  <div class="mapa-stat-lbl">polígonos por ano<br>de referência</div>
+                </div>
+                <div class="mapa-stat-div"></div>
+                <div class="mapa-stat">
+                  <div class="mapa-stat-num">340 mil</div>
+                  <div class="mapa-stat-lbl">km² de área total<br>do estado de Goiás</div>
+                </div>
+                <div class="mapa-stat-div"></div>
+                <div class="mapa-stat">
+                  <div class="mapa-stat-num">Cerrado</div>
+                  <div class="mapa-stat-lbl">bioma predominante<br>fitofisionomias IBGE</div>
+                </div>
+              </div>
+
+              <div class="mapa-chips">
+                <div class="mapa-chip">
+                  <div class="mapa-chip-lbl">Período analisado</div>
+                  <div class="mapa-chip-val">2016 → 2018</div>
+                </div>
+                <div class="mapa-chip">
+                  <div class="mapa-chip-lbl">Fonte dos dados</div>
+                  <div class="mapa-chip-val">IBGE LULC</div>
+                </div>
+                <div class="mapa-chip">
+                  <div class="mapa-chip-lbl">Projeção</div>
+                  <div class="mapa-chip-val">SIRGAS 2000</div>
+                </div>
+                <div class="mapa-chip">
+                  <div class="mapa-chip-lbl">Índice espacial</div>
+                  <div class="mapa-chip-val">GIST (R-Tree)</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- §04 — Relatório Técnico -->
+    <div id="sec-relatorio">
+      <div class="sec-cab">
+        <span class="sec-num">04</span>
+        <span class="sec-titulo">Relatório Técnico</span>
+        <div class="sec-linha"></div>
+        <span class="sec-tag">Benchmark · Goiás 2016–2018</span>
+      </div>
+      <div class="pad">
+
+        <div class="relatorio-grade">
+          <div class="rel-bloco">
+            <div class="rel-bloco-titulo"><span class="rel-icone">📋</span> Resumo</div>
+            <ul class="rel-lista">
+              <li><div><strong>Região:</strong> Goiás, Brasil</div></li>
+              <li><div><strong>Volume:</strong> ~680.506 polígonos</div></li>
+              <li><div><strong>Por ano:</strong> 340.253 polígonos</div></li>
+              <li><div><strong>Período:</strong> 2016 e 2018</div></li>
+              <li><div><strong>Fonte:</strong> IBGE LULC</div></li>
+              <li><div><strong>Operação:</strong> Interseção espacial + cálculo de área</div></li>
+            </ul>
+          </div>
+
+          <div class="rel-bloco">
+            <div class="rel-bloco-titulo"><span class="rel-icone">📊</span> Resultados</div>
+            <ul class="rel-lista">
+              <li><div><strong>PostGIS:</strong> 5,23 segundos</div></li>
+              <li><div>5.236,86 ms (tempo médio)</div></li>
+              <li><div><strong>GeoPandas:</strong> 62,28 segundos</div></li>
+              <li><div>62.288,20 ms (tempo médio)</div></li>
+              <li><div><strong>Speedup:</strong> 11,89× favorável ao SQL</div></li>
+              <li><div><strong>Redução:</strong> 91,6% no tempo de execução</div></li>
+            </ul>
+          </div>
+
+          <div class="rel-bloco">
+            <div class="rel-bloco-titulo"><span class="rel-icone">🔬</span> Análise dos Fatores</div>
+            <ul class="rel-lista">
+              <li><div><strong>Princípio da localidade de dados:</strong> processamento onde os dados residem</div></li>
+              <li><div><strong>Índice GIST (R-Tree):</strong> busca espacial O(log n) vs O(n)</div></li>
+              <li><div><strong>Redução de I/O:</strong> sem transferência de dados para o processo cliente</div></li>
+              <li><div><strong>Serialização evitada:</strong> Python carrega todos os dados em RAM</div></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="rel-conclusao">
+          <div class="rel-conc-label">Conclusão do Estudo</div>
+          <div class="rel-conc-texto">
+            <cite>"In-database (PostGIS) é a melhor abordagem para processamento geoespacial em larga escala."</cite>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end">
+          <div class="btn-grupo">
+            <button class="btn-acao btn-destaque" onclick="copiarResultados()">📋 Copiar resultados para artigo</button>
+            <button class="btn-acao" onclick="copiarLatex()">∂ Exportar tabela LaTeX</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- §05 — Análise Detalhada -->
+    <div id="sec-analise">
+      <div class="sec-cab">
+        <span class="sec-num">05</span>
+        <span class="sec-titulo">Análise Detalhada</span>
+        <div class="sec-linha"></div>
+        <span class="sec-tag">Métricas técnicas e fatores de desempenho</span>
+      </div>
+      <div class="pad">
+        <div class="analise-grade">
+
+          <div class="analise-card">
+            <div class="analise-card-titulo">Comparação de Tempo de Execução</div>
+            <div class="linha-metrica">
+              <span class="lm-nome">PostGIS SQL</span>
+              <span class="lm-valor lm-verde">5.236,86 ms</span>
+            </div>
+            <div class="barra-progresso"><div class="bp-fill" style="width:8.4%;background:var(--g700)"></div></div>
+
+            <div style="height:12px"></div>
+
+            <div class="linha-metrica">
+              <span class="lm-nome">GeoPandas Python</span>
+              <span class="lm-valor lm-laranja">62.288,20 ms</span>
+            </div>
+            <div class="barra-progresso"><div class="bp-fill" style="width:100%;background:#e07030"></div></div>
+
+            <div style="height:18px"></div>
+
+            <div style="background:var(--g50);border-radius:var(--r);padding:14px 16px;text-align:center">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--ink-4);margin-bottom:6px">DIFERENÇA ABSOLUTA</div>
+              <div style="font-family:var(--serif);font-size:28px;font-weight:900;color:var(--g700)">57,05 segundos</div>
+              <div style="font-size:11px;color:var(--ink-3);margin-top:3px">a mais no método Python</div>
+            </div>
+          </div>
+
+          <div class="analise-card">
+            <div class="analise-card-titulo">Fatores Técnicos de Vantagem SQL</div>
+            <ul class="lista-tecnica">
+              <li><span class="lt-icone">🗂️</span><div><strong>Índice GIST (R-Tree)</strong><br><span style="color:var(--ink-4);font-size:12px">Filtragem espacial em O(log n) antes da operação de interseção</span></div></li>
+              <li><span class="lt-icone">💾</span><div><strong>Zero transferência de dados</strong><br><span style="color:var(--ink-4);font-size:12px">Python serializa e carrega ~680k polígonos na memória RAM</span></div></li>
+              <li><span class="lt-icone">⚙️</span><div><strong>Execução nativa C/C++</strong><br><span style="color:var(--ink-4);font-size:12px">PostGIS usa GEOS nativo; Python adiciona overhead de interpretação</span></div></li>
+              <li><span class="lt-icone">🔄</span><div><strong>Pipelining no SGBD</strong><br><span style="color:var(--ink-4);font-size:12px">PostgreSQL otimiza o plano de execução com estatísticas atualizadas</span></div></li>
+              <li><span class="lt-icone">📡</span><div><strong>Princípio da localidade</strong><br><span style="color:var(--ink-4);font-size:12px">Dados processados onde residem, sem custo de I/O de rede</span></div></li>
+            </ul>
+          </div>
+
+          <div class="analise-card">
+            <div class="analise-card-titulo">Configuração do Ambiente</div>
+            <ul class="lista-tecnica">
+              <li><span class="lt-icone">🐘</span><div><strong>PostgreSQL 16</strong><br><span style="color:var(--ink-4);font-size:12px">SGBD relacional + PostGIS 3.4</span></div></li>
+              <li><span class="lt-icone">🐍</span><div><strong>Python 3.11</strong><br><span style="color:var(--ink-4);font-size:12px">GeoPandas 0.14 + Shapely 2.0</span></div></li>
+              <li><span class="lt-icone">🗺️</span><div><strong>SIRGAS 2000</strong><br><span style="color:var(--ink-4);font-size:12px">Sistema de referência coordenadas Brasil</span></div></li>
+              <li><span class="lt-icone">📦</span><div><strong>Shapefiles IBGE</strong><br><span style="color:var(--ink-4);font-size:12px">LULC 2016 e 2018 · Goiás</span></div></li>
+              <li><span class="lt-icone">🐳</span><div><strong>Docker</strong><br><span style="color:var(--ink-4);font-size:12px">Ambiente reproduzível e isolado</span></div></li>
+            </ul>
+          </div>
+
+          <div class="analise-card">
+            <div class="analise-card-titulo">Métricas de Escala</div>
+            <div class="linha-metrica" style="margin-bottom:8px">
+              <span class="lm-nome">Polígonos (2016)</span>
+              <span class="lm-valor lm-verde">340.253</span>
+            </div>
+            <div class="linha-metrica" style="margin-bottom:8px">
+              <span class="lm-nome">Polígonos (2018)</span>
+              <span class="lm-valor lm-verde">340.253</span>
+            </div>
+            <div class="linha-metrica" style="margin-bottom:8px">
+              <span class="lm-nome">Total processado</span>
+              <span class="lm-valor lm-verde">~680.506</span>
+            </div>
+            <div style="height:10px;border-top:1px solid var(--rule);margin:10px 0"></div>
+            <div class="linha-metrica" style="margin-bottom:8px">
+              <span class="lm-nome">Tempo SQL total</span>
+              <span class="lm-valor lm-verde">5.236 ms</span>
+            </div>
+            <div class="linha-metrica" style="margin-bottom:8px">
+              <span class="lm-nome">Tempo Python total</span>
+              <span class="lm-valor lm-laranja">62.288 ms</span>
+            </div>
+            <div class="linha-metrica">
+              <span class="lm-nome" style="font-weight:700">Speedup final</span>
+              <span class="lm-valor" style="color:var(--g500);font-size:16px;font-weight:900">11,89×</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- §06 — Artigo -->
+    <div id="sec-artigo">
+      <div class="sec-cab">
+        <span class="sec-num">06</span>
+        <span class="sec-titulo">Trecho Gerado para o Artigo</span>
+        <div class="sec-linha"></div>
+      </div>
+      <div class="pad">
+        <div class="artigo-caixa">
+          <div class="artigo-cabecalho">
+            <div class="artigo-cabecalho-titulo">
+              <span class="artigo-sigma">∑</span>
+              Destaque de Resultados · SBBD 2026 · GeoBench
+            </div>
+            <div class="btn-grupo">
+              <button class="btn-acao" style="border-color:rgba(255,255,255,.3);color:#fff;background:transparent" onclick="copiarArtigo()">⬇ Copiar texto</button>
+            </div>
+          </div>
+          <div class="artigo-corpo">
+            <div class="artigo-coluna-verde"></div>
+            <div class="artigo-texto" id="texto-artigo"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .conteudo -->
+</div><!-- .corpo -->
+
+<!-- RODAPÉ -->
+<footer>
+  <p>GeoBench · SBBD 2026 · Dados reais de Goiás (IBGE LULC 2016–2018)</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <span class="footer-badge">PostgreSQL 16 + PostGIS 3.4</span>
+    <span class="footer-badge">Python 3.11 + GeoPandas 0.14</span>
+    <span class="footer-badge">~680k polígonos</span>
+    <span class="footer-badge">Speedup: 11,89×</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
